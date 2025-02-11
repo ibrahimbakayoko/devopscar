@@ -9,10 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = $_POST['message'];
 
     try {
-        $dsn = 'mysql:host=127.0.0.1;dbname=Clientvoiture;charset=utf8';
-        $pdo = new PDO($dsn, 'karl', 'apache2');
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+        // Modification de l'hôte pour pointer vers le serveur distant
+        $dsn = 'mysql:host=192.168.27.174;dbname=Clientvoiture;charset=utf8';
+        $options = array(
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_TIMEOUT => 5
+        );
+        $pdo = new PDO($dsn, 'karl', 'apache2', $options);
+        
         $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email, sujet, message) 
                 VALUES (:nom, :prenom, :adresse, :telephone, :email, :sujet, :message)";
         $stmt = $pdo->prepare($sql);
