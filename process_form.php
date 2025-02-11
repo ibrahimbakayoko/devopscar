@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $message = $_POST['message'];
 
     try {
-        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
+        $dsn = 'mysql:host=127.0.0.1;dbname=Clientvoiture;charset=utf8';
         $pdo = new PDO($dsn, 'karl', 'apache2');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
