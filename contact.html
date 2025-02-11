@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Contact</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #00d2ff, #3a7bd5);
+            color: black;
+        }
+        .container {
+            background: white;
+            padding: 60px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #3a7bd5;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            background: #3a7bd5;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #285a9f;
+        }
+        .confirmation {
+            color: green;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Contactez-nous</h2>
+        <form id="contactForm" method="POST" action="process_form.php">
+            <input type="text" id="nom" name="nom" placeholder="Nom" required>
+            <input type="text" id="prenom" name="prenom" placeholder="Prénom" required>
+            <input type="text" id="adresse" name="adresse" placeholder="Adresse" required>
+            <input type="tel" id="telephone" name="telephone" placeholder="Numéro de téléphone" required pattern="[0-9]{10}">
+            <input type="email" id="email" name="email" placeholder="Adresse e-mail" required>
+            <input type="text" id="sujet" name="sujet" placeholder="Sujet" required>
+            <textarea id="message" name="message" placeholder="Votre message" required></textarea>
+            <button type="submit">Envoyer</button>
+        </form>
+        <p id="confirmation" class="confirmation">Message envoyé avec succès !</p>
+    </div>
+    
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            let confirmation = document.getElementById('confirmation');
+            confirmation.style.display = 'block';
+            setTimeout(function() {
+                confirmation.style.display = 'none';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
