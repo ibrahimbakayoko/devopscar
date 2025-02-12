@@ -1,12 +1,10 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $adresse = $_POST['adresse'];
-    $telephone = $_POST['telephone'];
-    $email = $_POST['email'];
-    $sujet = $_POST['sujet'];
-    $message = $_POST['message'];
+    $nom = htmlspecialchars($_POST['nom']);
+    $prenom = htmlspecialchars($_POST['prenom']);
+    $adresse = htmlspecialchars($_POST['adresse']);
+    $telephone = htmlspecialchars($_POST['telephone']);
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
     try {
         // Modification de l'hôte pour pointer vers le serveur distant
@@ -17,17 +15,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         );
         $pdo = new PDO($dsn, 'karl', 'apache2', $options);
         
-        $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email, sujet, message) 
-                VALUES (:nom, :prenom, :adresse, :telephone, :email, :sujet, :message)";
+        $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email) 
+                VALUES (:nom, :prenom, :adresse, :telephone, :email)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
             ':nom' => $nom,
             ':prenom' => $prenom,
             ':adresse' => $adresse,
             ':telephone' => $telephone,
-            ':email' => $email,
-            ':sujet' => $sujet,
-            ':message' => $message
+            ':email' => $email
         ]);
         echo "Message envoyé avec succès !";
     } catch (PDOException $e) {
@@ -35,5 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
+
 
 
