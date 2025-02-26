@@ -7,8 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
     try {
-        // Modification de l'hôte pour pointer vers le serveur distant
-        $dsn = 'mysql:host=192.168.27.174;dbname=Clientvoiture;charset=utf8';
+        // Modification de l'hôte pour pointer vers le serveur MariaDB sur le réseau Docker personnalisé
+        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
         $options = array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_TIMEOUT => 5
@@ -31,6 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 
