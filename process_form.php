@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         );
 
         // Connexion à la base de données
-        $pdo = new PDO($dsn, 'karl', 'apache2', $options);
+        $pdo = new PDO($dsn, 'root', 'apache', $options);
         
         // Préparer et exécuter la requête d'insertion
         $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email) 
