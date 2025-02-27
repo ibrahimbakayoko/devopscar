@@ -16,14 +16,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         // Modification de l'hôte pour pointer vers le serveur MariaDB
         // Assurez-vous que l'IP est correcte dans votre réseau Docker personnalisé
-        $dsn = 'mysql:host=192.168.27.189:3306;dbname=Clientvoiture;charset=utf8';
+        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
         $options = array(
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_TIMEOUT => 5
         );
 
         // Connexion à la base de données
-        $pdo = new PDO($dsn, 'root', 'apache', $options);
+        $pdo = new PDO($dsn, 'karl', 'apache2', $options);
 
         // Préparer et exécuter la requête d'insertion
         $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email) 
@@ -45,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 
 
