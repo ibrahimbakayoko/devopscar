@@ -24,12 +24,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Connexion à la base de données
         $pdo = new PDO($dsn, 'root', 'apache', $options);
-        
+
         // Préparer et exécuter la requête d'insertion
         $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email) 
                 VALUES (:nom, :prenom, :adresse, :telephone, :email)";
         $stmt = $pdo->prepare($sql);
-        
+
         $stmt->execute([
             ':nom' => $nom,
             ':prenom' => $prenom,
