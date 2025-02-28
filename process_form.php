@@ -7,7 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
 
     try {
-        $dsn = 'mysql:host=localhost;dbname=Clientvoiture;charset=utf8';
+        // Utilisez l'adresse IP du conteneur MariaDB
+        $dsn = 'mysql:host=192.168.1.10;dbname=Clientvoiture;charset=utf8';
         $pdo = new PDO($dsn, 'karl', 'apache2');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -27,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 
 
