@@ -1,19 +1,14 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validation and sanitization of inputs
-    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-
-    if (!$email) {
-        echo "Veuillez fournir une adresse e-mail valide.";
-        exit();
-    }
+    $nom = $_POST['nom'];
+    $prenom = $_POST['prenom'];
+    $adresse = $_POST['adresse'];
+    $telephone = $_POST['telephone'];
+    $email = $_POST['email'];
 
     try {
-        $dsn = 'mysql:host=192.168.27.189:3306;dbname=Clientvoiture;charset=utf8mb4';
+        // Utilisez l'adresse IP du conteneur MariaDB
+        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
         $pdo = new PDO($dsn, 'karl', 'apache2');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -27,12 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':telephone' => $telephone,
             ':email' => $email
         ]);
-
         echo "Message envoyé avec succès !";
-
     } catch (PDOException $e) {
-        error_log($e->getMessage());
-        echo "Une erreur est survenue. Veuillez réessayer plus tard.";
+        echo "Erreur : " . $e->getMessage();
     }
 }
 ?>
