@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     try {
-        $dsn = 'mysql:host=192.168.1.10;dbname=Clientvoiture;charset=utf8mb4';
+        $dsn = 'mysql:host=192.168.27.189:3306;dbname=Clientvoiture;charset=utf8mb4';
         $pdo = new PDO($dsn, 'karl', 'apache2');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
