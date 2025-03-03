@@ -1,16 +1,33 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate and sanitize inputs
-    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_STRING);
-    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_STRING);
-    $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_STRING);
-    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_STRING);
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    // Validation et assainissement des entrées
+    $nom = filter_input(INPUT_POST, 'nom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $prenom = filter_input(INPUT_POST, 'prenom', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $adresse = filter_input(INPUT_POST, 'adresse', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $telephone = filter_input(INPUT_POST, 'telephone', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+
+    // Vérification de l'email
+    if (!$email) {
+        echo "Veuillez fournir une adresse e-mail valide.";
+        exit();
+    }
+
+    // Validation du numéro de téléphone (format français attendu)
+    if (!preg_match('/^0[1-9](\s?\d{2}){4}$/', $telephone)) {
+        echo "Veuillez fournir un numéro de téléphone valide.";
+        exit();
+    }
 
     try {
-        // Utilisez l'adresse IP du conteneur MariaDB
-        $dsn = 'mysql:host=192.168.1.10;dbname=Clientvoiture;charset=utf8';
-        $pdo = new PDO($dsn, 'karl', 'apache2');
+        // Utilisation de variables d'environnement pour les informations de connexion
+        $host = getenv('DB_HOST');
+        $dbname = getenv('DB_NAME');
+        $username = getenv('DB_USER');
+        $password = getenv('DB_PASSWORD');
+
+        $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
+        $pdo = new PDO($dsn, $username, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $sql = "INSERT INTO contacts (nom, prenom, adresse, telephone, email) 
@@ -26,11 +43,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo "Message envoyé avec succès !";
 
-        // Rediriger vers une page de remerciement
-        header("Location: thank_you.php");
-        exit();
     } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
+        // Enregistrement de l'erreur dans les logs du serveur
+        error_log($e->getMessage());
+        echo "Une erreur est survenue. Veuillez réessayer plus tard.";
     }
 }
 ?>
