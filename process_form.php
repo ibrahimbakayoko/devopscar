@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // Utilisez l'adresse IP du conteneur MariaDB
-        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
+        $dsn = 'mysql:host=localhost;dbname=Clientvoiture;charset=utf8';
         $pdo = new PDO($dsn, 'karl', 'apache2');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
