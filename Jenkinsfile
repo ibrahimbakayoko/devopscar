@@ -32,14 +32,14 @@ pipeline {
             }
         }
 
-        // stage('Déployer sur Kubernetes') {
-        //     steps {
-        //         script {
-        //             sh 'kubectl apply -f k8s/deployment.yaml'
-        //             sh 'kubectl apply -f k8s/service.yaml'
-        //         }
-        //     }
-        // ici}
+         stage('Déployer sur Kubernetes') {
+             steps {
+                 script {
+                     sh 'docker-compose up -d'
+                    // sh 'kubectl apply -f k8s/service.yaml'
+                 }
+             }
+        }
     }
 }
 
