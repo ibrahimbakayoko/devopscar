@@ -2,57 +2,44 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'dnais1210/devopscar'
-        CONTAINER_NAME = 'php_app'
+        DOCKER_IMAGE = 'dnais1210/devopscar'
         DOCKER_CREDENTIALS = 'docker-hub-credentials'
+        // KUBE_CONFIG = '/root/.kube/config' // Chemin vers ton fichier kubeconfig
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Cloner le code') {
             steps {
-                git 'https://github.com/ibrahimbakayoko/devopscar.git'  // Remplace par ton repo
+                git branch: 'main', url: 'https://github.com/ibrahimbakayoko/devopscar.git'
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Construire l’image Docker') {
             steps {
                 script {
-                    sh "docker build -t ${IMAGE_NAME}:$BUILD_ID ."
+                    sh 'docker build -t $DOCKER_IMAGE:$BUILD_NUMBER  .'
                 }
             }
         }
 
-        stage('Login to Docker Hub') {
+        stage('Pousser sur Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                    withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: ""]) {
+                        sh 'docker push $DOCKER_IMAGE:$BUILD_NUMBER'
                     }
                 }
             }
         }
 
-        stage('Push Image to Docker Hub') {
-            steps {
-                script {
-                    sh "docker push ${IMAGE_NAME}:$BUILD_ID"
-                }
-            }
-        }
-
-        stage('Deploy with Docker Compose') {
-            steps {
-                script {
-                    sh "docker-compose down || true"
-                    sh "docker-compose up -d"
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            sh "docker logout"
-        }
+        // stage('Déployer sur Kubernetes') {
+        //     steps {
+        //         script {
+        //             sh 'kubectl apply -f k8s/deployment.yaml'
+        //             sh 'kubectl apply -f k8s/service.yaml'
+        //         }
+        //     }
+        // ici}
     }
 }
+
