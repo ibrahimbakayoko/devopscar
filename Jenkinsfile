@@ -25,7 +25,7 @@ pipeline {
         stage('Pousser sur Docker Hub') {
             steps {
                 script {
-                    withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: "https://docker.io"]) {
+                    withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: ""]) {
                         sh 'docker push $DOCKER_IMAGE:$BUILD_NUMBER'
                     }
                 }
