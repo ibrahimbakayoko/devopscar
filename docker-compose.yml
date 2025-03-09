@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  php-apache:
+    build: .
+    container_name: php_app
+    ports:
+      - "8080:80"  # Expose le serveur PHP sur le port 8080
+    volumes:
+      - .:/var/www/html  # Monte le dossier actuel dans le conteneur
+    environment:
+      - DB_HOST=192.168.1.100  # Remplace par l'adresse IP de ton serveur MariaDB
+      - DB_NAME=devopscar
+      - DB_USER=devopscar
+      - DB_PASS=devopscar
