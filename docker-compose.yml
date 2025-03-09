@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   php-app-1:
-    image: dnais1210/devopscar:latest  # Utilisation de l'image PHP officielle sur Docker Hub
+    image: dnais1210/devopscar:21  # Utilisation de l'image PHP officielle sur Docker Hub
     container_name: php_app_1
     ports:
       - "8081:80"  # Expose l'application sur le port 8081
@@ -17,7 +17,7 @@ services:
       - app_network
 
   php-app-2:
-    image: dnais1210/devopscar:latest  # Deuxième instance de l'application
+    image: dnais1210/devopscar:21  # Deuxième instance de l'application
     container_name: php_app_2
     ports:
       - "8082:80"  # Expose l'application sur un port différent (8082)
