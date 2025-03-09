@@ -1,15 +1,35 @@
 version: '3.8'
 
 services:
-  php-apache:
-    build: .
-    container_name: php_app
+  php-app-1:
+    image: php:apache  # Utilisation de l'image PHP officielle sur Docker Hub
+    container_name: php_app_1
     ports:
-      - "8080:80"  # Expose le serveur PHP sur le port 8080
+      - "8081:80"  # Expose l'application sur le port 8081
     volumes:
-      - .:/var/www/html  # Monte le dossier actuel dans le conteneur
+      - ./app:/var/www/html  # Monte le code source dans le conteneur
     environment:
-      - DB_HOST=192.168.1.100  # Remplace par l'adresse IP de ton serveur MariaDB
+      - DB_HOST=192.168.1.195  # Adresse IP de la VM avec MariaDB (sans port)
       - DB_NAME=devopscar
       - DB_USER=devopscar
       - DB_PASS=devopscar
+    networks:
+      - app_network
+
+  php-app-2:
+    image: php:apache  # Deuxième instance de l'application
+    container_name: php_app_2
+    ports:
+      - "8082:80"  # Expose l'application sur un port différent (8082)
+    volumes:
+      - ./app:/var/www/html
+    environment:
+      - DB_HOST=192.168.1.195
+      - DB_NAME=devopscar
+      - DB_USER=devopscar
+      - DB_PASS=devopscar
+    networks:
+      - app_network
+
+networks:
+  app_network:
