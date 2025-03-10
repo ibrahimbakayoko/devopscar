@@ -17,7 +17,7 @@ pipeline {
         stage('Construire l’image Docker') {
             steps {
                 script {
-                    sh 'docker build -t $DOCKER_IMAGE:$BUILD_NUMBER  .'
+                    sh "docker build -t $DOCKER_IMAGE:$BUILD_NUMBER  ."
                 }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: ""]) {
-                        sh 'docker push $DOCKER_IMAGE:$BUILD_NUMBER'
+                        sh "docker push $DOCKER_IMAGE:$BUILD_NUMBER"
                     }
                 }
             }
@@ -35,6 +35,7 @@ pipeline {
          stage('Déployer sur Kubernetes') {
              steps {
                  script {
+                     sh 'docker-compose down'
                      sh 'docker-compose up -d'
                     // sh 'kubectl apply -f k8s/service.yaml'
                  }
