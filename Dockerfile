@@ -1,27 +1,22 @@
-# Utilisation d'une image officielle de PHP avec Apache
+# Utilisation de l'image PHP avec Apache
 FROM php:8.1-apache
 
-# Installation des extensions nécessaires pour MariaDB/MySQL
+# Installation des extensions nécessaires
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # Copier les fichiers du projet dans le conteneur
 COPY . /var/www/html
 
-# Définition du répertoire de travail
-WORKDIR /var/www/html
+# Copier la configuration Apache personnalisée
+COPY my_custom_apache.conf /etc/apache2/sites-available/000-default.conf
 
-# Accorder les droits au répertoire web et s'assurer que le serveur a accès aux fichiers
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html \
-    && chmod -R 755 /var/www
-
-# Activer le module de réécriture d'Apache (utile si besoin de réécriture d'URL)
+# Activer le module de réécriture pour Apache (si nécessaire)
 RUN a2enmod rewrite
 
-# Exposer le port 80 pour le serveur Apache
-EXPOSE 80
+# Définir les droits sur le répertoire web
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
-# Lancer Apache en mode foreground
-CMD ["apache2-foreground"]
+# Exposer le port 80 pour Apache
+EXPOSE 80
 
 
