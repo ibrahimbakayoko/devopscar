@@ -5,10 +5,10 @@ FROM php:8.1-apache
 RUN docker-php-ext-install pdo pdo_mysql mysqli
 
 # Copier les fichiers du projet dans le conteneur
-COPY ProjetKarl/. /var/www/html
+COPY . /var/www/html
 
 # Copier la configuration Apache personnalisée
-COPY ProjetKarl/my_custom_apache.conf /etc/apache2/sites-available/000-default.conf
+COPY my_custom_apache.conf /etc/apache2/sites-available/000-default.conf
 
 # Activer le module de réécriture pour Apache (si nécessaire)
 RUN a2enmod rewrite
