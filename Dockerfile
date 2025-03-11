@@ -10,6 +10,9 @@ RUN docker-php-ext-install pdo pdo_mysql mysqli
 # Afficher les fichiers avant la copie (pour débogage)
 RUN echo "Avant copie :" && ls -la /var/www/html
 
+# Modifier les permissions des fichiers
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+
 # Copier les fichiers du projet dans le conteneur
 COPY . .
 
@@ -17,7 +20,7 @@ COPY . .
 RUN echo "Après copie :" && ls -la /var/www/html
 
 # Modifier les permissions des fichiers
-RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+#RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # Exposer le port 80 pour Apache
 EXPOSE 80
