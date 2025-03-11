@@ -4,7 +4,6 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'dnais1210/devopscar'
         DOCKER_CREDENTIALS = 'docker-hub-credentials'
-        // KUBE_CONFIG = '/root/.kube/config' // Chemin vers ton fichier kubeconfig
     }
 
     stages {
@@ -17,7 +16,7 @@ pipeline {
         stage('Construire l’image Docker') {
             steps {
                 script {
-                    sh "docker build -t $DOCKER_IMAGE:$BUILD_NUMBER  ."
+                    sh "docker build -t $DOCKER_IMAGE:${BUILD_NUMBER} ."
                 }
             }
         }
@@ -26,20 +25,19 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS", url: ""]) {
-                        sh "docker push $DOCKER_IMAGE:$BUILD_NUMBER"
+                        sh "docker push $DOCKER_IMAGE:${BUILD_NUMBER}"
                     }
                 }
             }
         }
 
-         stage('Déployer sur Kubernetes') {
-             steps {
-                 script {
-                     sh 'docker-compose down'
-                     sh 'docker-compose up -d'
-                    // sh 'kubectl apply -f k8s/service.yaml'
-                 }
-             }
+        stage('Déployer avec Docker Compose') {
+            steps {
+                script {
+                    sh "export BUILD_NUMBER=${BUILD_NUMBER} && docker-compose down"
+                    sh "export BUILD_NUMBER=${BUILD_NUMBER} && docker-compose up -d"
+                }
+            }
         }
     }
 }
