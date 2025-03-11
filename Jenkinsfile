@@ -35,7 +35,8 @@ pipeline {
             steps {
                 script {
                     sh "export BUILD_NUMBER=${BUILD_NUMBER} && docker-compose down"
-                    sh "export BUILD_NUMBER=${BUILD_NUMBER} && docker-compose --no-cache  up -d"
+                    sh "docker build --no-cache"
+                    sh "export BUILD_NUMBER=${BUILD_NUMBER} && docker-compose  up -d"
                 }
             }
         }
