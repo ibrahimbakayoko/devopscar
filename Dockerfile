@@ -17,7 +17,7 @@ RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 #COPY . .
 
 # Copier les fichiers du sous-répertoire Projetkarl dans le conteneur
-COPY . /var/www/html/
+COPY . .
 
 
 # Afficher les fichiers après la copie (pour débogage)
