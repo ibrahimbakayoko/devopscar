@@ -3,8 +3,8 @@
 function enregistrerContact($nom, $prenom, $adresse, $telephone, $email) {
     try {
         // Utilisez l'adresse IP du conteneur MariaDB
-        $dsn = 'mysql:host=192.168.27.189;dbname=Clientvoiture;charset=utf8';
-        $pdo = new PDO($dsn, 'karl', 'apache2');
+        $dsn = 'mysql:host=192.168.1.195;dbname=devopscar;charset=utf8';
+        $pdo = new PDO($dsn, 'devopscar', 'devopscar');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Préparer la requête d'insertion
